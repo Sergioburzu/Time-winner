@@ -9,7 +9,7 @@ import { ArrowLeft, Settings as SettingsIcon, Trash2, Edit2, Check } from 'lucid
 export default function SettingsPage() {
   const navigate = useNavigate()
   const { children, updateChild } = useChildrenStore()
-  const { tasks, addTask, deleteTask, updateTask, fetchTasks } = useTasksStore()
+  const { tasks, addTask, deleteTask, updateTask } = useTasksStore()
   const { family, isParentUnlocked, signOut } = useAuthStore()
 
   const [editingChildId, setEditingChildId] = useState<string | null>(null)

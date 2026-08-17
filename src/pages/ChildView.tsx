@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useChildrenStore } from '../store/childrenStore'
 import { useTodayStore } from '../store/todayStore'
@@ -17,7 +17,7 @@ export default function ChildView() {
   const { childId } = useParams<{ childId: string }>()
   const navigate = useNavigate()
   const { children } = useChildrenStore()
-  const { assignedTasks, fetchTodayTasks, completeTask, isLoading } = useTodayStore()
+  const { assignedTasks, fetchTodayTasks, completeTask } = useTodayStore()
 
   const child = children.find((c) => c.id === childId)
   const [completedAnimation, setCompletedAnimation] = useState<string | null>(null)

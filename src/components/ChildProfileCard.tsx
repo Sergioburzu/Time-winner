@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Plus, Settings, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
 import type { Child } from '../store/childrenStore'
 import type { AssignedTask } from '../store/todayStore'

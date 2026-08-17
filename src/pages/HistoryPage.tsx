@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useChildrenStore } from '../store/childrenStore'
@@ -89,7 +89,6 @@ export default function HistoryPage() {
       minutos: r.minutes_earned,
     }))
 
-  const selectedChild = children.find((c) => c.id === selectedChildId)
   const totalMinutes = records.reduce((sum, r) => sum + r.minutes_earned, 0)
   const avgMinutes = records.length > 0 ? Math.round(totalMinutes / records.length) : 0
 
@@ -185,7 +184,7 @@ export default function HistoryPage() {
                     boxShadow: '4px 4px 12px rgba(163,177,198,0.5)',
                     background: 'var(--bg-app)',
                   }}
-                  formatter={(v: number) => [`${v} min`, 'Minutos ganados']}
+                  formatter={(v: any) => [`${v} min`, 'Minutos ganados']}
                 />
                 <Bar dataKey="minutos" fill="#4DA8DA" radius={[6, 6, 0, 0]} />
               </BarChart>

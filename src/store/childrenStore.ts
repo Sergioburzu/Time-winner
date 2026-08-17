@@ -24,7 +24,7 @@ interface ChildrenState {
   deleteChild: (id: string) => Promise<void>
 }
 
-export const useChildrenStore = create<ChildrenState>((set, get) => ({
+export const useChildrenStore = create<ChildrenState>((set) => ({
   children: [],
   isLoading: false,
   error: null,

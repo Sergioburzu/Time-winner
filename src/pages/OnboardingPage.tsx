@@ -8,7 +8,7 @@ type Step = 'welcome' | 'account' | 'family' | 'firstChild' | 'done'
 
 export default function OnboardingPage() {
   const navigate = useNavigate()
-  const { signUp, signIn, family, isLoading, error: authError } = useAuthStore()
+  const { signUp, signIn, isLoading, error: authError } = useAuthStore()
   const { addChild } = useChildrenStore()
   const { addTask } = useTasksStore()
 
@@ -74,7 +74,7 @@ export default function OnboardingPage() {
     }
 
     try {
-      const child = await addChild(currentFamily.id, {
+      await addChild(currentFamily.id, {
         name: childName.trim(),
         age: childAge,
         avatar: childAvatar,

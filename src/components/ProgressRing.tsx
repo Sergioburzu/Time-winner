@@ -1,4 +1,3 @@
-import React from 'react'
 import { getProgressColor } from '../lib/limits'
 
 interface ProgressRingProps {

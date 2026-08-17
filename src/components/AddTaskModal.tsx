@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { X } from 'lucide-react'
 import type { Child } from '../store/childrenStore'
 import type { Task } from '../store/tasksStore'

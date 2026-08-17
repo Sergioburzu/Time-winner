@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { Check } from 'lucide-react'
 import type { AssignedTask } from '../store/todayStore'
 

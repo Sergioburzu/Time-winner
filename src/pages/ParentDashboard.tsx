@@ -10,7 +10,7 @@ import ChildProfileCard from '../components/ChildProfileCard'
 import AddChildModal from '../components/AddChildModal'
 import AddTaskModal from '../components/AddTaskModal'
 import PinLock from '../components/PinLock'
-import { LogOut, Plus, History, Settings, RefreshCw, AlertTriangle } from 'lucide-react'
+import { LogOut, Plus, History, Settings, RefreshCw } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
 export default function ParentDashboard() {
@@ -75,7 +75,7 @@ export default function ParentDashboard() {
     setIsCreatingFamily(true)
     setFamilyError('')
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('families')
         .insert({ name: familyNameInput.trim(), owner_id: user.id })
         .select()
@@ -320,9 +320,9 @@ export default function ParentDashboard() {
       {showAddChild && (
         <AddChildModal
           onClose={() => setShowAddChild(false)}
-          onAdd={(data) => {
-            if (!family) return Promise.reject(new Error('Sin familia'))
-            return addChild(family.id, data)
+          onAdd={async (data) => {
+            if (!family) throw new Error('Sin familia')
+            await addChild(family.id, data)
           }}
         />
       )}
@@ -330,9 +330,9 @@ export default function ParentDashboard() {
       {editingChild && (
         <AddChildModal
           onClose={() => setEditingChild(null)}
-          onAdd={(data) => {
-            if (!family) return Promise.reject(new Error('Sin familia'))
-            return addChild(family.id, data)
+          onAdd={async (data) => {
+            if (!family) throw new Error('Sin familia')
+            await addChild(family.id, data)
           }}
           editChild={editingChild}
           onUpdate={(id, data) => updateChild(id, data)}
