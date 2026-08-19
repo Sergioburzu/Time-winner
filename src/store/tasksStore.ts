@@ -7,8 +7,6 @@ export interface Task {
   name: string
   icon: string
   reward_minutes: number
-  min_age: number | null
-  max_age: number | null
   created_at: string
 }
 
@@ -16,7 +14,6 @@ interface TasksState {
   tasks: Task[]
   isLoading: boolean
   error: string | null
-
   fetchTasks: (familyId: string) => Promise<void>
   addTask: (familyId: string, data: Omit<Task, 'id' | 'family_id' | 'created_at'>) => Promise<Task>
   updateTask: (id: string, data: Partial<Task>) => Promise<void>
@@ -30,16 +27,16 @@ export const DEFAULT_TASK_ICONS = [
 ]
 
 export const DEFAULT_TASKS = [
-  { name: 'Hacer la cama', icon: '🛏️', reward_minutes: 10, min_age: 5, max_age: null },
-  { name: 'Lavar los platos', icon: '🍽️', reward_minutes: 15, min_age: 7, max_age: null },
-  { name: 'Ordenar habitación', icon: '🧹', reward_minutes: 20, min_age: 5, max_age: null },
-  { name: 'Recoger juguetes', icon: '🧩', reward_minutes: 10, min_age: 3, max_age: 8 },
-  { name: 'Leer 20 minutos', icon: '📚', reward_minutes: 20, min_age: 6, max_age: null },
-  { name: 'Dar de comer al perro', icon: '🐕', reward_minutes: 10, min_age: 6, max_age: null },
-  { name: 'Regar las plantas', icon: '🌱', reward_minutes: 10, min_age: 5, max_age: null },
-  { name: 'Poner la mesa', icon: '🥄', reward_minutes: 10, min_age: 6, max_age: null },
-  { name: 'Ducharse solo', icon: '🛁', reward_minutes: 15, min_age: 7, max_age: null },
-  { name: 'Estudiar / Deberes', icon: '📝', reward_minutes: 30, min_age: 6, max_age: null },
+  { name: 'Hacer la cama', icon: '🛏️', reward_minutes: 10 },
+  { name: 'Lavar los platos', icon: '🍽️', reward_minutes: 15 },
+  { name: 'Ordenar habitación', icon: '🧹', reward_minutes: 20 },
+  { name: 'Recoger juguetes', icon: '🧩', reward_minutes: 10 },
+  { name: 'Leer 20 minutos', icon: '📚', reward_minutes: 20 },
+  { name: 'Dar de comer al perro', icon: '🐕', reward_minutes: 10 },
+  { name: 'Regar las plantas', icon: '🌱', reward_minutes: 10 },
+  { name: 'Poner la mesa', icon: '🥄', reward_minutes: 10 },
+  { name: 'Ducharse solo', icon: '🛁', reward_minutes: 15 },
+  { name: 'Estudiar / Deberes', icon: '📝', reward_minutes: 30 },
 ]
 
 export const useTasksStore = create<TasksState>((set) => ({

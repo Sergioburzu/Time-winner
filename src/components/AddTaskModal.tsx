@@ -32,14 +32,11 @@ export default function AddTaskModal({
   const [newName, setNewName] = useState('')
   const [newIcon, setNewIcon] = useState('⭐')
   const [newMinutes, setNewMinutes] = useState(10)
-  const [newMinAge, setNewMinAge] = useState<number | null>(null)
-  const [newMaxAge, setNewMaxAge] = useState<number | null>(null)
 
   const availableTasks = existingTasks.filter((t) => {
     const notAssigned = !assignedTaskIds.includes(t.id)
-    const ageOk = (t.min_age === null || child.age >= t.min_age) && (t.max_age === null || child.age <= t.max_age)
     const matchSearch = t.name.toLowerCase().includes(search.toLowerCase())
-    return notAssigned && ageOk && matchSearch
+    return notAssigned && matchSearch
   })
 
   // Default tasks not yet in catalog (for quick add suggestions)
@@ -64,8 +61,6 @@ export default function AddTaskModal({
         name: newName.trim(),
         icon: newIcon,
         reward_minutes: newMinutes,
-        min_age: newMinAge,
-        max_age: newMaxAge,
       })
       onClose()
     } catch (err: unknown) {
@@ -129,8 +124,6 @@ export default function AddTaskModal({
                         setNewName(dt.name)
                         setNewIcon(dt.icon)
                         setNewMinutes(dt.reward_minutes)
-                        setNewMinAge(dt.min_age)
-                        setNewMaxAge(dt.max_age)
                       }}
                       style={{
                         background: 'rgba(77,168,218,0.08)',
@@ -271,27 +264,7 @@ export default function AddTaskModal({
               </div>
             </div>
 
-            {/* Age range (optional) */}
-            <div style={{ display: 'flex', gap: '0.75rem' }}>
-              <div style={{ flex: 1 }}>
-                <label style={{ fontWeight: 700, fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>
-                  Edad mín (opcional)
-                </label>
-                <input type="number" min={2} max={18}
-                  value={newMinAge ?? ''}
-                  onChange={(e) => setNewMinAge(e.target.value ? Number(e.target.value) : null)}
-                  className="input-neumorphic" placeholder="—" />
-              </div>
-              <div style={{ flex: 1 }}>
-                <label style={{ fontWeight: 700, fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block', marginBottom: '0.3rem' }}>
-                  Edad máx (opcional)
-                </label>
-                <input type="number" min={2} max={18}
-                  value={newMaxAge ?? ''}
-                  onChange={(e) => setNewMaxAge(e.target.value ? Number(e.target.value) : null)}
-                  className="input-neumorphic" placeholder="—" />
-              </div>
-            </div>
+
 
             {error && <p style={{ color: 'var(--danger)', fontWeight: 600, fontSize: '0.9rem' }}>⚠️ {error}</p>}
 

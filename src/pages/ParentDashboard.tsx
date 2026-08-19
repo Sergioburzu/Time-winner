@@ -5,12 +5,12 @@ import { useChildrenStore } from '../store/childrenStore'
 import type { Child } from '../store/childrenStore'
 import { useTasksStore } from '../store/tasksStore'
 import { useTodayStore } from '../store/todayStore'
-import { todayString } from '../lib/limits'
+import { todayString, formatMinutes } from '../lib/limits'
 import ChildProfileCard from '../components/ChildProfileCard'
 import AddChildModal from '../components/AddChildModal'
 import AddTaskModal from '../components/AddTaskModal'
 import PinLock from '../components/PinLock'
-import { LogOut, Plus, History, Settings, RefreshCw } from 'lucide-react'
+import { LogOut, Plus, History, Settings, RefreshCw, Info, X } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
 export default function ParentDashboard() {
@@ -27,6 +27,7 @@ export default function ParentDashboard() {
   const [isCreatingFamily, setIsCreatingFamily] = useState(false)
   const [familyNameInput, setFamilyNameInput] = useState('')
   const [familyError, setFamilyError] = useState('')
+  const [showInfo, setShowInfo] = useState(false)
 
   const loadData = useCallback(async () => {
     if (!family) return
@@ -167,6 +168,14 @@ export default function ParentDashboard() {
 
         <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           <button
+            onClick={() => setShowInfo(true)}
+            className="btn-ghost"
+            style={{ padding: '0.5rem', display: 'flex', alignItems: 'center' }}
+            title="¿De dónde salen estos tiempos?"
+          >
+            <Info size={18} style={{ color: 'var(--primary)' }} />
+          </button>
+          <button
             onClick={handleRefresh}
             className="btn-ghost"
             style={{ padding: '0.5rem', display: 'flex', alignItems: 'center' }}
@@ -198,6 +207,118 @@ export default function ParentDashboard() {
           </button>
         </div>
       </header>
+
+      {/* Info modal */}
+      {showInfo && (
+        <div
+          className="modal-backdrop"
+          onClick={(e) => e.target === e.currentTarget && setShowInfo(false)}
+        >
+          <div
+            className="modal-box"
+            style={{ maxWidth: 500, padding: '2rem' }}
+          >
+            {/* Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.25rem', gap: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                <div style={{
+                  width: 36, height: 36, borderRadius: '50%',
+                  background: 'linear-gradient(135deg, var(--primary), #6dd5fa)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0,
+                }}>
+                  <Info size={18} color="#fff" />
+                </div>
+                <h2 style={{ fontFamily: 'Fredoka, sans-serif', fontSize: '1.25rem', color: 'var(--text-main)', lineHeight: 1.2 }}>
+                  ¿De dónde salen estos tiempos?
+                </h2>
+              </div>
+              <button
+                onClick={() => setShowInfo(false)}
+                className="btn-ghost"
+                style={{ padding: '0.3rem', flexShrink: 0 }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Body */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div
+                style={{
+                  background: 'rgba(77,168,218,0.08)',
+                  border: '1.5px solid rgba(77,168,218,0.25)',
+                  borderRadius: 'var(--border-radius-sm)',
+                  padding: '1rem 1.1rem',
+                  lineHeight: 1.65,
+                }}
+              >
+                <p style={{ color: 'var(--text-main)', fontSize: '0.9rem', marginBottom: '0.85rem' }}>
+                  En <strong style={{ color: 'var(--primary)' }}>Time Winner</strong> no fomentamos el uso excesivo de pantallas.
+                  Todos los límites máximos configurables en la aplicación se basan estrictamente en las guías
+                  pediátricas internacionales de la <strong>OMS</strong>, la <strong>Academia Americana de Pediatría (AAP)</strong>{' '}
+                  y la <strong>Asociación Española de Pediatría (AEP)</strong>.
+                </p>
+                <p style={{ color: 'var(--text-main)', fontSize: '0.9rem' }}>
+                  Asimismo, la asignación de tareas domésticas y rutinas de autocuidado sigue las conclusiones del{' '}
+                  <strong>Harvard Grant Study</strong>, demostrando que la cooperación diaria en el hogar fortalece
+                  la autonomía, las funciones ejecutivas y la autoestima infantil.
+                </p>
+              </div>
+
+              {/* Sources pills */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+                {([
+                  { label: 'OMS', url: 'https://www.who.int/es/news/item/24-04-2019-to-grow-up-healthy-children-need-to-sit-less-and-play-more' },
+                  { label: 'AAP', url: 'https://www.healthychildren.org/Spanish/family-life/media/Paginas/how-to-make-a-family-media-use-plan.aspx' },
+                  { label: 'AEP', url: 'https://enfamilia.aeped.es/vida-sana/pantallas-en-infancia-adolescencia' },
+                  { label: 'Harvard Grant Study', url: 'https://www.adultdevelopmentstudy.org/' },
+                ] as { label: string; url: string }[]).map(({ label, url }) => (
+                  <a
+                    key={label}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      background: 'rgba(77,168,218,0.12)',
+                      color: 'var(--primary)',
+                      borderRadius: 99,
+                      padding: '0.25rem 0.75rem',
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                      fontFamily: 'Nunito, sans-serif',
+                      border: '1px solid rgba(77,168,218,0.3)',
+                      textDecoration: 'none',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.3rem',
+                      transition: 'all 0.2s',
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(77,168,218,0.25)'
+                      ;(e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-1px)'
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(77,168,218,0.12)'
+                      ;(e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(0)'
+                    }}
+                  >
+                    📚 {label} ↗
+                  </a>
+                ))}
+              </div>
+
+              <button
+                onClick={() => setShowInfo(false)}
+                className="btn-primary"
+                style={{ marginTop: '0.25rem' }}
+              >
+                Entendido
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main content */}
       <main style={{ padding: '2rem 1.5rem 3rem', maxWidth: 1200, margin: '0 auto' }}>
@@ -240,7 +361,7 @@ export default function ParentDashboard() {
                   <div style={{ textAlign: 'left' }}>
                     <p style={{ fontFamily: 'Fredoka, sans-serif', fontSize: '0.95rem', color: 'var(--text-main)' }}>{child.name}</p>
                     <p style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 700 }}>
-                      ⏱ {earned}min · {completed}/{total} tareas
+                      ⏱ {formatMinutes(earned)} · {completed}/{total} tareas
                     </p>
                   </div>
                 </button>

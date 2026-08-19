@@ -54,8 +54,6 @@ export default function SettingsPage() {
       name: newTaskName.trim(),
       icon: newTaskIcon,
       reward_minutes: newTaskMinutes,
-      min_age: null,
-      max_age: null,
     })
     setNewTaskName('')
     setNewTaskIcon('⭐')
@@ -140,7 +138,7 @@ export default function SettingsPage() {
                             className="neumorphic-sm"
                             style={{ width: 40, height: 40, border: 'none', cursor: 'pointer', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Fredoka', color: 'var(--text-main)' }}>+</button>
                           <span style={{ minWidth: 60, fontFamily: 'Fredoka, sans-serif', fontSize: '1.1rem', color: 'var(--primary)', fontWeight: 700, textAlign: 'center' }}>
-                            {tempLimit} min
+                            {formatMinutes(tempLimit)}
                           </span>
                         </div>
                       </div>
